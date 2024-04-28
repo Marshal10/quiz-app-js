@@ -15,13 +15,12 @@ let score=0
 function loadQuiz(){
     deselectAnswers()
     const currentQuizData=quizData[currentQuiz]
-    console.log(currentQuizData)
 
-    questionEl.innerText=currentQuizData.question
-    a_text.innerText=currentQuizData.a
-    b_text.innerText=currentQuizData.b
-    c_text.innerText=currentQuizData.c
-    d_text.innerText=currentQuizData.d
+    questionEl.innerHTML=currentQuizData.question
+    a_text.innerHTML=currentQuizData.a
+    b_text.innerHTML=currentQuizData.b
+    c_text.innerHTML=currentQuizData.c
+    d_text.innerHTML=currentQuizData.d
 }
 
 function deselectAnswers(){
@@ -45,7 +44,7 @@ async function loadQuestions(){
     const {results}=await res.json()
     results.forEach(result=>{
         let tempOptions=[result.correct_answer,...result.incorrect_answers]
-        let question_text=result.question
+        let question_text=decodeURIComponent(result.question)
         let correct_ans=result.correct_answer
         shuffle(tempOptions)
         quizData.push({
@@ -70,9 +69,7 @@ function shuffle(array) {
         array[randomIndex], array[currentIndex]];
     }
   }
-
-
-
+  
 loadQuestions()
 
 submitBtn.addEventListener('click',()=>{
