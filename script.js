@@ -22,13 +22,22 @@ function loadQuiz(){
     b_text.innerText=currentQuizData.b
     c_text.innerText=currentQuizData.c
     d_text.innerText=currentQuizData.d
-
 }
 
 function deselectAnswers(){
     answerEls.forEach(el=>{
         el.checked=false
     })
+}
+
+function selectedAnswer(){
+    let answer
+    answerEls.forEach(el=>{
+        if (el.checked){
+            answer=el.parentElement.querySelector('label').innerText
+        }
+    })
+    return answer
 }
 
 async function loadQuestions(){
@@ -65,3 +74,19 @@ function shuffle(array) {
 
 
 loadQuestions()
+
+submitBtn.addEventListener('click',()=>{
+    const answer=selectedAnswer()
+    if (answer){
+        if(answer===quizData[currentQuiz].correct){
+            score++
+        }
+        currentQuiz++
+        if(currentQuiz<quizData.length){
+            loadQuiz()
+        }else{
+            quizContainer.innerHTML=`<h2 class="result">You have answered ${score}/${quizData.length} questions correctly</h2>
+            <button onclick="location.reload()">Reload</button>`
+        }
+    }
+})
