@@ -7,27 +7,40 @@ const c_text=document.getElementById('c_text')
 const d_text=document.getElementById('d_text')
 const submitBtn=document.getElementById('submit')
 
-const quizData=[
-    {
-        question:"Question here",
-        a:"choice1",
-        b:"choice2",
-        c:"choice3",
-        d:"choice4",
-        correct:"d"
-    }
-]
+
+let quizData=[]
 
 async function loadQuestions(){
     const res=await fetch('https://opentdb.com/api.php?amount=10&category=18&type=multiple')
     const {results}=await res.json()
-    // console.log(results)
-    let options=[]
     results.forEach(result=>{
         let tempOptions=[result.correct_answer,...result.incorrect_answers]
-        
-        console.log(tempOptions)
+        let question_text=result.question
+        let correct_ans=result.correct_answer
+        shuffle(tempOptions)
+        quizData.push({
+            question:question_text,
+            a:tempOptions[0],
+            b:tempOptions[1],
+            c:tempOptions[2],
+            d:tempOptions[3],
+            correct:correct_ans
+        })
     })
+    console.log(quizData)
 }
+
+function shuffle(array) {
+    let currentIndex = array.length;
+
+    while (currentIndex != 0) {
+      let randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  }
+
+
 
 loadQuestions()
