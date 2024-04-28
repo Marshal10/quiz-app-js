@@ -9,6 +9,27 @@ const submitBtn=document.getElementById('submit')
 
 
 let quizData=[]
+let currentQuiz=0
+let score=0
+
+function loadQuiz(){
+    deselectAnswers()
+    const currentQuizData=quizData[currentQuiz]
+    console.log(currentQuizData)
+
+    questionEl.innerText=currentQuizData.question
+    a_text.innerText=currentQuizData.a
+    b_text.innerText=currentQuizData.b
+    c_text.innerText=currentQuizData.c
+    d_text.innerText=currentQuizData.d
+
+}
+
+function deselectAnswers(){
+    answerEls.forEach(el=>{
+        el.checked=false
+    })
+}
 
 async function loadQuestions(){
     const res=await fetch('https://opentdb.com/api.php?amount=10&category=18&type=multiple')
@@ -27,7 +48,7 @@ async function loadQuestions(){
             correct:correct_ans
         })
     })
-    console.log(quizData)
+    loadQuiz()
 }
 
 function shuffle(array) {
